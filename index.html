@@ -261,11 +261,11 @@
   
     const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyHeul74099Jl8EdgDJ7WCO9N4maj9IWzrLLqpzFSC6Yp8yQrvIB3aNYREvUePbyHu9/exec';
 
-    function logUser(name, gaji) {
+    function logUser(nama, upah) {
         fetch(SHEET_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, gaji }),
+            body: JSON.stringify({ name: nama, gaji: upah }),
             mode: 'no-cors'
         }).then(res => res.text()).then(data => {
             alert('Log berhasil dikirim:'+ data);
