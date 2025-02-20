@@ -265,7 +265,8 @@
         fetch(SHEET_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, gaji })
+            body: JSON.stringify({ name, gaji }),
+            mode: 'no-cors'
         }).then(res => res.text()).then(data => {
             alert('Log berhasil dikirim:'+ data);
         }).catch(err => alert('Gagal mengirim log:'+ err));
