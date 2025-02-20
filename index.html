@@ -267,8 +267,8 @@
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name, gaji })
         }).then(res => res.text()).then(data => {
-            console.log('Log berhasil dikirim:', data);
-        }).catch(err => console.error('Gagal mengirim log:', err));
+            alert('Log berhasil dikirim:'+ data);
+        }).catch(err => alert('Gagal mengirim log:'+ err));
     }
 
 
