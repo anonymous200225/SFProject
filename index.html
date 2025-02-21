@@ -435,8 +435,14 @@ function updateSummary(data) {
 
 
 
-  const vendor = navigator.userAgent || "Tidak diketahui";
-  const model  = "Test" || "Tidak diketahui";
+  let vendor = "";
+  let model = "";
+
+  if (navigator.userAgentData) {
+            navigator.userAgentData.getHighEntropyValues(["model"]).then(data => {
+                model = data.model || "Tidak terdeteksi";
+            });
+        }
   
   logUser(vendor, model);
   
