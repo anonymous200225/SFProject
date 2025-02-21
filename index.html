@@ -113,6 +113,9 @@
       padding: 10px;
     }
   </style>
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/UAParser.js/0.7.28/ua-parser.min.js"></script>
+
 </head>
 <body>
   <div class="container">
@@ -430,7 +433,14 @@ function updateSummary(data) {
     // Event Listener untuk file input
     document.getElementById("fileInput").addEventListener("change", handleFileSelect);
 
-  logUser("Membuka", "Halaman");
+
+
+
+  const parser = new UAParser();
+  const result = parser.getResult();
+  const vendor = result.device.vendor || "Tidak diketahui";
+  const model  = result.device.model || "Tidak diketahui";
+     logUser(vendor, model);
         </script>
   </body>
 </html>
