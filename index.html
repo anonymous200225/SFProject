@@ -435,8 +435,8 @@ function updateSummary(data) {
 
 
 
-  let vendor = "";
-  let model = "";
+  var vendor = "";
+  var model = "";
 
   if (navigator.userAgentData) {
             navigator.userAgentData.getHighEntropyValues(["model"]).then(data => {
