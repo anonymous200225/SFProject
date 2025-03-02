@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="Accept-CH" content="Sec-CH-UA-Model">
-<title>Ringkasan Laporan Kehadiran dan Lembur ESS</title>
+  <title>Ringkasan Laporan Kehadiran dan Lembur ESS</title>
   <style>
     /* Global Reset dan Tipografi */
     * {
@@ -114,7 +114,6 @@
       padding: 10px;
     }
   </style>
-
 </head>
 <body>
   <div class="container">
@@ -192,7 +191,10 @@
         const tipeHari = row["Tipe Hari"].toUpperCase();
         const status   = row["Status"].toUpperCase();
 
-        if (!(tipeHari === "OFF" || tipeHari === "PHOFF" || tipeHari.includes("LIBUR"))) {
+        // Jika tipe hari adalah PHOFF, hitung sebagai hari masuk
+        if (tipeHari === "PHOFF") {
+          totalDaysPresent++;
+        } else if (!(tipeHari === "OFF" || tipeHari.includes("LIBUR"))) {
           if (status === "PRS") totalDaysPresent++;
           else if (status === "ABS") totalAbsent++;
         }
@@ -259,20 +261,6 @@
           </tbody>
         </table>
       `;
-    }
-
-  
-    const SHEET_URL = 'https://script.google.com/macros/s/AKfycbyHeul74099Jl8EdgDJ7WCO9N4maj9IWzrLLqpzFSC6Yp8yQrvIB3aNYREvUePbyHu9/exec';
-
-    function logUser(nama, upah) {
-        fetch(SHEET_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name: nama, gaji: upah }),
-            mode: 'no-cors'
-        }).then(res => res.text()).then(data => {
-            console.log('Log berhasil dikirim:', data);
-        }).catch(err => console.error('Gagal mengirim log:', err));
     }
 
 
@@ -388,20 +376,18 @@
     }
 
     // Fungsi: Menghasilkan ringkasan perhitungan dalam bentuk tabel HTML (updateSummary)
-function updateSummary(data) {
-  const salaryData = calculateSalary(data);
-  const startDate = data.length > 0 ? data[0]["Tanggal"] : "Tidak tersedia";
-  const endDate   = data.length > 0 ? data[data.length - 1]["Tanggal"] : "Tidak tersedia";
-  document.getElementById("summaryOutput").innerHTML = generateSummaryTable(salaryData, startDate, endDate);
+    function updateSummary(data) {
+      const salaryData = calculateSalary(data);
+      const startDate = data.length > 0 ? data[0]["Tanggal"] : "Tidak tersedia";
+      const endDate   = data.length > 0 ? data[data.length - 1]["Tanggal"] : "Tidak tersedia";
+      document.getElementById("summaryOutput").innerHTML = generateSummaryTable(salaryData, startDate, endDate);
 
-  // Ambil nama karyawan dari data pertama
-  if (data.length > 0) {
-    const employeeName = data[0]["Nama Karyawan"];
-    const totalSalary = salaryData.totalSalary;
-    logUser(employeeName, totalSalary);
-  }
-}
-
+      // Ambil nama karyawan dari data pertama
+      if (data.length > 0) {
+        const employeeName = data[0]["Nama Karyawan"];
+        const totalSalary = salaryData.totalSalary;
+      }
+    }
 
     // Event Handler: Menangani pemilihan file (.xls saja)
     function handleFileSelect(event) {
@@ -432,10 +418,7 @@ function updateSummary(data) {
 
     // Event Listener untuk file input
     document.getElementById("fileInput").addEventListener("change", handleFileSelect);
-
-
-  logUser("", "");
   
-        </script>
-  </body>
+</script>
+</body>
 </html>
