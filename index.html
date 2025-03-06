@@ -152,7 +152,7 @@
     // Tarif tetap
     const DAILY_RATE   = 121592;
     const OVERTIME_RATE = 17571;
-    const MEAL_RATE     = 25331;
+    const MEAL_RATE     = 15199;
 
     // Variabel Global untuk Menyimpan Data
     let parsedData = [];
@@ -185,11 +185,13 @@
       let totalDaysPresent = 0,
           totalAbsent = 0,
           totalOvertimeMinutes = 0, // Untuk ringkasan (dihitung dari Menit Lembur)
-          totalOvertimeIndex = 0;   // Untuk perhitungan gaji (dihitung dari Indeks Lembur)
+          totalOvertimeIndex = 0,   // Untuk perhitungan gaji (dihitung dari Indeks Lembur)
+          totalPrsMeal = 0; // Total uang makan
 
       data.forEach(row => {
         const tipeHari = row["Tipe Hari"].toUpperCase();
         const status   = row["Status"].toUpperCase();
+        const otherStatus = row["Other Status"].toUpperCase();
 
         // Jika tipe hari adalah PHOFF, hitung sebagai hari masuk
         if (tipeHari === "PHOFF") {
@@ -197,6 +199,12 @@
         } else if (!(tipeHari === "OFF" || tipeHari.includes("LIBUR"))) {
           if (status === "PRS") totalDaysPresent++;
           else if (status === "ABS") totalAbsent++;
+        }
+
+
+        // Hitung total uang makan
+        if(otherStatus.indexOf("PRS_MEAL") > -1) {
+          totalPrsMeal++;
         }
         
         // Hitung total menit lembur untuk ringkasan
@@ -212,18 +220,20 @@
 
       // Untuk ringkasan: konversi total menit ke jam
       const totalOvertimeHoursDisplay = totalOvertimeMinutes / 60;
-      const totalUangMakan = totalDaysPresent * MEAL_RATE;
+      const totalUangMakan = totalPrsMeal * MEAL_RATE;
       // Perhitungan gaji menggunakan indeks lembur
       const totalSalary = (totalDaysPresent * DAILY_RATE) + (totalOvertimeIndex * OVERTIME_RATE) + totalUangMakan;
+      const totalOvertimeSalary = totalOvertimeIndex * OVERTIME_RATE;
 
       return { 
-        totalDaysPresent, 
-        totalAbsent, 
+        totalDaysPresent,
+        totalAbsent,
         totalOvertimeMinutes,
         totalOvertimeHoursDisplay,
         totalOvertimeIndex,
-        totalSalary, 
-        totalUangMakan 
+        totalSalary,
+        totalOvertimeSalary,
+        totalUangMakan
       };
     }
 
@@ -243,12 +253,24 @@
           </thead>
           <tbody>
             <tr>
-              <td>Total Gaji</td>
+              <td>Total Upah</td>
               <td>${formatRupiah(data.totalSalary)}</td>
             </tr>
             <tr>
+              <td>Total Upah Lembur</td>
+              <td>${formatRupiah(data.totalOvertimeSalary)}</td>
+            </tr>
+            <tr>
+              <td>Total Uang Makan</td>
+              <td>${formatRupiah(data.totalUangMakan)}</td>
+            </tr>
+            <tr>
               <td>Total Jam Lembur</td>
-              <td>${data.totalOvertimeHoursDisplay.toFixed(2)}</td>
+              <td>${data.totalOvertimeHoursDisplay.toFixed()}</td>
+            </tr>
+            <tr>
+              <td>Total Indeks Lembur</td>
+              <td>${data.totalOvertimeIndex.toFixed()}</td>
             </tr>
             <tr>
               <td>Total Hari Masuk</td>
