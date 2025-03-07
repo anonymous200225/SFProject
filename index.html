@@ -222,7 +222,8 @@
       const totalOvertimeHoursDisplay = totalOvertimeMinutes / 60;
       const totalUangMakan = totalPrsMeal * MEAL_RATE;
       // Perhitungan gaji menggunakan indeks lembur
-      const totalSalary = (totalDaysPresent * DAILY_RATE) + (totalOvertimeIndex * OVERTIME_RATE) + totalUangMakan;
+      let totalSalary = (totalDaysPresent * DAILY_RATE) + (totalOvertimeIndex * OVERTIME_RATE) + totalUangMakan;
+      totalSalary = totalSalary - 48000;
       const totalOvertimeSalary = totalOvertimeIndex * OVERTIME_RATE;
 
       return { 
