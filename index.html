@@ -7,7 +7,13 @@
   <title>Ringkasan Laporan Kehadiran dan Lembur ESS</title>
   <style>
     /* Global Reset dan Tipografi */
-    * {
+* {
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+
       box-sizing: border-box;
       margin: 0;
       padding: 0;
@@ -222,8 +228,7 @@
       const totalOvertimeHoursDisplay = totalOvertimeMinutes / 60;
       const totalUangMakan = totalPrsMeal * MEAL_RATE;
       // Perhitungan gaji menggunakan indeks lembur
-      let totalSalary = (totalDaysPresent * DAILY_RATE) + (totalOvertimeIndex * OVERTIME_RATE) + totalUangMakan;
-      totalSalary = totalSalary - 48000;
+      const totalSalary = (totalDaysPresent * DAILY_RATE) + (totalOvertimeIndex * OVERTIME_RATE) + totalUangMakan;
       const totalOvertimeSalary = totalOvertimeIndex * OVERTIME_RATE;
 
       return { 
@@ -267,11 +272,11 @@
             </tr>
             <tr>
               <td>Total Jam Lembur</td>
-              <td>${data.totalOvertimeHoursDisplay.toFixed()}</td>
+              <td>${data.totalOvertimeHoursDisplay.toFixed(2)}</td>
             </tr>
             <tr>
               <td>Total Indeks Lembur</td>
-              <td>${data.totalOvertimeIndex.toFixed()}</td>
+              <td>${data.totalOvertimeIndex.toFixed(2)}</td>
             </tr>
             <tr>
               <td>Total Hari Masuk</td>
